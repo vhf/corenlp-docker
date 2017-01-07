@@ -1,22 +1,42 @@
 # CoreNLP Server Docker
 
+In the image, CoreNLP is installed at `/opt/corenlp/src/`.
+
 To get this image:
 
-```
-docker pull vzhong/corenlp-server
+```sh
+docker pull dockervhf/corenlp-server
 ```
 
 To run the server:
 
-```
-docker run -p 9000:9000 vzhong/corenlp-server
-```
-
-To run the server as a daemon:
-
-```
-docker run --name corenlp -p 9000:9000 -d vzhong/corenlp-server
+```sh
+docker run -p 9000:9000 dockervhf/corenlp-server
 ```
 
-The port exposed on the docker image for CoreNLP is `9000`.
-On the image, CoreNLP is installed at `/opt/corenlp/src/`.
+## additional models and docker compose
+
+You can download models and put them in a volume located at `/models` in the container.
+
+Here is a sample `docker-compose.yml`:
+
+```yml
+version: '2'
+services:
+  thisismyservice:
+    image: dockervhf/corenlp-server
+    expose:
+      - 9000
+    volumes:
+      - $PWD/models:/models
+```
+
+In the directory where it's located, you could:
+
+```sh
+mkdir -p models && cd models
+wget http://nlp.stanford.edu/software/stanford-spanish-corenlp-2016-10-31-models.jar
+cd .. && docker-compose up -d
+```
+
+The script `corenlp.sh` will take care of copying all models located at `/models` into the directory where CoreNLP will be able to find them.

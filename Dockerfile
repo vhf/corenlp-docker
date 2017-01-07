@@ -10,7 +10,7 @@ RUN \
   apt-get update && \
   apt-get install -y oracle-java8-installer
 
-Run apt-get install -y unzip
+RUN apt-get install -y unzip
 
 # Install CoreNLP
 ENV VERSION stanford-corenlp-full-2016-10-31
