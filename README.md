@@ -40,3 +40,17 @@ cd .. && docker-compose up -d
 ```
 
 The script `corenlp.sh` will take care of copying all models located at `/models` into the directory where CoreNLP will be able to find them.
+
+If you would like to add a KB to resolve entities (e.g. `wikidict.tab.gz`), place it in `/models` and mount this directory in `/opt/corenlp/src/edu/stanford/nlp/models/kbp/`:
+
+```yml
+version: '2'
+services:
+  thisismyservice:
+    image: dockervhf/corenlp-server
+    expose:
+      - 9000
+    volumes:
+      - $PWD/models:/models
+      - $PWD/models:/opt/corenlp/src/edu/stanford/nlp/models/kbp/
+```
